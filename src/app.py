@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, Personajes, Planetas, Usuarios, Favoritos
 #from models import Person
 
 app = Flask(__name__)
@@ -44,6 +44,53 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+
+@app.route('/personajes', methods=['GET'])
+def get_personajes():
+
+    resultados = Personajes.query.all()
+    if resultados ==[] :
+        return jsonify({"msj":"No existen personajes"}), 400
+    results = list(map(lambda personaje:personaje.serialize(),resultados))
+
+    return jsonify(results), 200
+
+@app.route('/planetas', methods=['GET'])
+def get_planetas():
+
+    resultados = Planetas.query.all()
+    if resultados ==[] :
+        return jsonify({"msj":"No existen planetas"}), 400
+    results = list(map(lambda planeta:planeta.serialize(),resultados))
+
+    return jsonify(results), 200
+
+@app.route('/usuarios', methods=['GET'])
+def get_usuarios():
+
+    resultados = Usuarios.query.all()
+    if resultados ==[] :
+        return jsonify({"msj":"No existen Usuarios"}), 400
+    results = list(map(lambda usuario:usuario.serialize(),resultados))
+
+    return jsonify(results), 200
+
+@app.route('/favoritos', methods=['GET'])
+def get_favoritos():
+
+    resultados = Favoritos.query.all()
+    if resultados ==[] :
+        return jsonify({"msj":"No existen favoritos"}), 400
+    results = list(map(lambda favorito:favorito.serialize(),resultados))
+
+    return jsonify(results), 200
+
+
+
+
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
